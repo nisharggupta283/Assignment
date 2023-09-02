@@ -164,23 +164,31 @@ public class UserDetails {
 
 	}
 
-	public static String deleteUsers(String ids[]) {
+	public static String deleteUsers(String ids[], String all) {
 
 		Connection con = null;
 		PreparedStatement ps = null;
 		int isExecuted = 0;
 		JSONObject main = new JSONObject();
 		try {
+			String query = "";
 			if (ids != null) {
-				con = ConnectionPool.getReadOnlyConnection();
-
-//			String idString = Arrays.toString(ids);
-//			idString = idString.substring(1, idString.length() - 1);
-
-				ps = con.prepareStatement("DELETE FROM USER_MASTER where USER_ID IN (" + ids + ")");
+				con = ConnectionPool.getConnection();
+				if (all != null && !"".equalsIgnoreCase(all)) {
+					query = "DELETE FROM USER_MASTER";
+				} else {
+					StringBuffer sb = new StringBuffer();
+					for (int i = 0; i < ids.length; i++) {
+						sb.append(ids[i]);
+						sb.append(",");
+					}
+					sb.append(0);
+					query = "DELETE FROM USER_MASTER where USER_ID IN (" + sb.toString() + ")";
+				}
+				ps = con.prepareStatement(query);
 				isExecuted = ps.executeUpdate();
 
-				System.out.println(ids);
+				System.out.println("query---------------------> " + query);
 
 				if (isExecuted >= 1) {
 					main.put("STATUS", true);
@@ -215,37 +223,37 @@ public class UserDetails {
 				String phone = "";
 				String pass = "";
 				if (request.getParameter("name") != null && !"".equalsIgnoreCase(request.getParameter("name"))) {
-					name = "name='" + request.getParameter("name")+"'";
+					name = "name='" + request.getParameter("name") + "'";
 				} else {
 					name = "name=name";
 				}
 				if (request.getParameter("dob") != null && !"".equalsIgnoreCase(request.getParameter("dob"))) {
-					dob = "dob='"+request.getParameter("dob")+"'";
-				}else {
+					dob = "dob='" + request.getParameter("dob") + "'";
+				} else {
 					dob = "dob=dob";
 				}
 				if (request.getParameter("gender") != null && !"".equalsIgnoreCase(request.getParameter("gender"))) {
-					gender = "gender='"+request.getParameter("gender")+"'";
-				}else {
+					gender = "gender='" + request.getParameter("gender") + "'";
+				} else {
 					gender = "gender=gender";
 				}
 				if (request.getParameter("email") != null && !"".equalsIgnoreCase(request.getParameter("email"))) {
-					email = "email='"+request.getParameter("email")+"'";
-				}else {
+					email = "email='" + request.getParameter("email") + "'";
+				} else {
 					email = "email=email";
 				}
 				if (request.getParameter("phone") != null && !"".equalsIgnoreCase(request.getParameter("phone"))) {
-					phone = "phone="+request.getParameter("phone");
-				}else {
+					phone = "phone=" + request.getParameter("phone");
+				} else {
 					phone = "phone=phone";
 				}
 				if (request.getParameter("pass") != null && !"".equalsIgnoreCase(request.getParameter("pass"))) {
-					pass = "pass='"+request.getParameter("pass")+"'";
-				}else {
+					pass = "pass='" + request.getParameter("pass") + "'";
+				} else {
 					pass = "pass=pass";
 				}
 				name = "UPDATE USER_MASTER set " + name + "," + dob + "," + gender + "," + email + "," + phone + ","
-						+ pass+" WHERE USER_ID="+request.getParameter("id");
+						+ pass + " WHERE USER_ID=" + request.getParameter("id");
 				con = ConnectionPool.getConnection();
 				ps = con.prepareStatement(name);
 				isExecuted = ps.executeUpdate();

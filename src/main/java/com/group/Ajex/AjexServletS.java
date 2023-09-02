@@ -63,6 +63,12 @@ public class AjexServletS extends HttpServlet {
 					writer.write(deleteOne);
 					break;
 				}
+				case "deleteSelected": {
+					writer = response.getWriter();
+					String deleteOne = UserDetails.deleteUsers(request.getParameterValues("checkbox"),request.getParameter("all"));
+					writer.write(deleteOne);
+					break;
+				}
 				default:
 					System.out.println("Invalid Mode");
 					break;

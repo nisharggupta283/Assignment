@@ -43,7 +43,7 @@ public class FetchDataS extends HttpServlet {
 				switch (request.getParameter("mode")) {
 				case "delete": {
 					writer = response.getWriter();
-					String deleteUsers = UserDetails.deleteUsers(request.getParameterValues("id"));
+					String deleteUsers = UserDetails.deleteUsers(request.getParameterValues("id"),null);
 					writer.write(deleteUsers);
 					break;
 				}
