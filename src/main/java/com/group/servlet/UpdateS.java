@@ -43,8 +43,10 @@ public class UpdateS extends HttpServlet {
 			LoginInfo valid = UserValidation.isValid(request.getParameter("id"));
 			if (valid != null) {
 				boolean update = UserDetails.update(request);
-				if (update)
+				if (update) {
+					request.setAttribute("UserList", UserDetails.getDetailsInit());
 					uri = "see-list.jsp";
+				}
 				else
 					uri = "updateDetails.jsp";
 			} else {

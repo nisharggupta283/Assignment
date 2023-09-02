@@ -145,7 +145,7 @@ public class UserDetails {
 		JSONObject main = new JSONObject();
 		try {
 			if (id != null && !"".equalsIgnoreCase(id)) {
-				con = ConnectionPool.getReadOnlyConnection();
+				con = ConnectionPool.getConnection();
 				ps = con.prepareStatement("DELETE FROM USER_MASTER where USER_ID=" + id);
 				isExecuted = ps.executeUpdate();
 
