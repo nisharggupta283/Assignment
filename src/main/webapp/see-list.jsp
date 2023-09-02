@@ -28,12 +28,12 @@ System.out.println(list);
 
 <body>
 	<div class="toast align-items-center" role="alert"
-		aria-live="assertive" aria-atomic="true">
+		aria-live="assertive" aria-atomic="true" id="role">
 		<div class="d-flex">
-			<div class="toast-body">Hello, world! This is a toast message.
+			<div class="toast-body" id="message">
 			</div>
 			<button type="button" class="btn-close me-2 m-auto"
-				data-bs-dismiss="toast" aria-label="Close"></button>
+				data-bs-dismiss="toast" aria-label="Close" onclick="hideTheBar()"></button>
 		</div>
 	</div>
 	<div class="container">

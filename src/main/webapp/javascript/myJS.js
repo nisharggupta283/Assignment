@@ -66,8 +66,8 @@ function callAjexMethod() {
 }
 
 function goToPage(id) {
-	if(!id){
-		id=$('#update').val();
+	if (!id) {
+		id = $('#update').val();
 	}
 	location.href = '/Mypcot/UpdateS?mode=col&id=' + id + '&random=' + Math.random();
 }
@@ -137,7 +137,7 @@ var getSingleUSerDate = function(val) {
 			$('#NAME').text(data.NAME);
 			$('#EMAIL').text(data.EMAIL);
 			$('#update').val(data.ID);
-			$('#delete').attr("id",data.ID);
+			$('#delete').attr("id", data.ID);
 		}
 	});
 }
@@ -154,8 +154,15 @@ var callDelete = function(e) {
 		},
 		success: function(data) {
 			console.log(data);
-			$(`#tr${e.id}`).remove();
-			$(``).show();
+			if (data.STATUS == true) {
+				$(`#tr${e.id}`).remove();
+				$('#message').text('item deleted successfully');
+				$(`#role`).show();
+			}
+
 		}
 	});
+}
+var hideTheBar=function(){
+	$('#role').hide("slow");
 }
