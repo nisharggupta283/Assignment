@@ -1,0 +1,13 @@
+CREATE SCHEMA `mypcot` ;
+use mypcot;
+
+CREATE TABLE `mypcot`.`user_master` (
+  `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `pass` VARCHAR(45) NULL,
+  `dob` VARCHAR(45) NULL,
+  `gender` VARCHAR(7) NULL,
+  `phone` BIGINT(10) NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE);

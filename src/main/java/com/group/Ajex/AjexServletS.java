@@ -1,4 +1,4 @@
-package com.group.servlet;
+package com.group.Ajex;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,12 +11,12 @@ import javax.servlet.http.HttpSession;
 import com.beans.UserDetails;
 import com.infoes.LoginInfo;
 
-public class FetchDataS extends HttpServlet {
+public class AjexServletS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public FetchDataS() {
+	public AjexServletS() {
 		super();
-		System.out.println("/FetchDataS called------------------------->");
+		System.out.println("AjexServlet S --------------------->");
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,41 +41,26 @@ public class FetchDataS extends HttpServlet {
 			PrintWriter writer = null;
 			try {
 				switch (request.getParameter("mode")) {
-				case "delete": {
+				case "likeDetails": {
 					writer = response.getWriter();
-					String deleteUsers = UserDetails.deleteUsers(request.getParameterValues("id"));
-					writer.write(deleteUsers);
+					String details = UserDetails.getLikeRecords(request.getParameter("select"),
+							request.getParameter("input"));
+					writer.write(details);
+					break;
+				}
+				case "afterSelect": {
+					String id = request.getParameter("selected-value");
+					if (id != null && !"".equalsIgnoreCase(id)) {
+						writer = response.getWriter();
+						id = UserDetails.getDetail(id);
+						writer.write(id);
+					}
 					break;
 				}
 				case "deleteOne": {
 					writer = response.getWriter();
 					String deleteOne = UserDetails.deleteUser(request.getParameter("id"));
 					writer.write(deleteOne);
-					break;
-				}
-				case "update": {
-					writer = response.getWriter();
-					String update = UserDetails.update(request.getParameter("field"), request.getParameter("value"),
-							request.getParameter("id"));
-					writer.write(update);
-					break;
-				}
-				case "getDetail": {
-					writer = response.getWriter();
-					String detail = UserDetails.getDetail(request.getParameter("id"));
-					writer.write(detail);
-					break;
-				}
-				case "getDetails": {
-					writer = response.getWriter();
-					String details = UserDetails.getDetails();
-					writer.write(details);
-					break;
-				}
-				case "likeDetails": {
-					writer = response.getWriter();
-					String details = UserDetails.getLikeRecords(request.getParameter("select"),request.getParameter("input"));
-					writer.write(details);
 					break;
 				}
 				default:
@@ -87,7 +72,5 @@ public class FetchDataS extends HttpServlet {
 					writer.close();
 			}
 		}
-
 	}
-
 }

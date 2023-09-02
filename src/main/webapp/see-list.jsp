@@ -1,5 +1,14 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.infoes.LoginInfo"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%
+List<LoginInfo> list = null;
+if (request.getAttribute("UserList") != null)
+	list = ((ArrayList<LoginInfo>) (request.getAttribute("UserList")));
+System.out.println(list);
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,11 +18,11 @@
 <link rel="stylesheet" href="./css/tables-style.css" />
 <link rel="stylesheet" href="./css/bootstrap.min.css" />
 <link rel="stylesheet" href="./css/autocomplete.css" />
-<script src="./javascript/bootstrap.min.js"></script>
 <script src="./javascript/myJS.js"></script>
 <script src="./javascript/autocomplete.js"></script>
 <script src="./javascript/autocomplete-ui.js"></script>
 <script>
+	
 </script>
 </head>
 
@@ -23,9 +32,12 @@
 		<div class="row">
 			<div class="col my-5">
 				<ul class="nav nav-tabs">
-					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="#">Active</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+					<li class="nav-item"><a class="nav-link active" id="you"
+						aria-current="page" href="javascript:void(0)"
+						onclick="callChangeDiv('you',1)">List of Users</a></li>
+					<li class="nav-item"><a class="nav-link" id='me'
+						href="javascript:void(0)" onclick="callChangeDiv('me',2)">Get
+							Single User Data</a></li>
 				</ul>
 			</div>
 		</div>
@@ -39,13 +51,11 @@
 							<select class="form-select" aria-label="Default select example"
 								id="select-filter">
 								<option selected></option>
-								<%
-								for (int i = 0; i < 5; i++) {
-								%>
-								<option value="<%=i++%>"><%="Nisharg" + i%></option>
-								<%
-								}
-								%>
+								<option value="NAME">NAME</option>
+								<option value="ID">ID</option>
+								<option value="PHONE">PHONE</option>
+								<option value="DOB">DOB</option>
+								<option value="EMAIL">EMAIL</option>
 							</select>
 						</div>
 						<div class="col-4 my-5" style="width: 28.333333%">
@@ -62,31 +72,37 @@
 								<thead>
 									<tr>
 										<!--Header  -->
-										<%
-										for (int i = 0; i < 6; i++) {
-										%>
-										<th><%="Header" + i%></th>
-										<%
-										}
-										%>
+										<th>NAME</th>
+										<th>ID</th>
+										<th>PHONE</th>
+										<th>DOB</th>
+										<th>EMAIL</th>
+										<th>UPDATE</th>
+										<th>DELETE</th>
 									</tr>
 								</thead>
 								<tbody id="to-delete">
 									<%
 									String count = "";
-									for (int i = 1; i < 6; i++) {
-										count = count == "active-row" ? "" : "active-row";
+									if (list != null) {
+										for (int i = 1; i < list.size(); i++) {
+											count = count == "active-row" ? "" : "active-row";
+											LoginInfo loginInfo = list.get(i);
 									%>
-									<tr class="<%=count%>">
-										<%
-										for (int k = 0; k < 8; k++) {
-										%>
-										<td><%="data" + k%></td>
-										<%
-										}
-										%>
+									<tr class="<%=count%>" id="tr<%=loginInfo.getUserID()%>">
+										<td><%=loginInfo.getName()%></td>
+										<td><%=loginInfo.getUserID()%></td>
+										<td><%=loginInfo.getPhone()%></td>
+										<td><%=loginInfo.getDob()%></td>
+										<td><%=loginInfo.getEmail()%></td>
+										<td><button type="button" class="btn btn-success">Update</button></td>
+										<td><button type="button" class="btn btn-danger"
+												onclick="callDelete(this);"
+												value="<%=loginInfo.getUserID()%>"
+												id="<%=loginInfo.getUserID()%>">Delete</button></td>
 									</tr>
 									<%
+									}
 									}
 									%>
 								</tbody>
@@ -94,7 +110,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="container text-center">
+<!-- 				<div class="container text-center">
 					<div class="row">
 						<div class="col-md-4"></div>
 						<div class="col-md-4 offset-md-4">
@@ -111,12 +127,32 @@
 							</nav>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
 
-	<div class="container" id="see-single-list">
+	<div class="container" id="see-single-list" style="display: none;">
+		<div class="container">
+			<div class="row">
+				<div class="col-4 my-5" style="width: 14.333333%">
+					<select class="form-select" aria-label="Default select example"
+						id="single-filter">
+						<option selected value=""></option>
+						<option value="ID">ID</option>
+						<option value="NAME">NAME</option>
+						<option value="PHONE">PHONE</option>
+						<option value="DOB">DOB</option>
+						<option value="EMAIL">EMAIL</option>
+					</select>
+				</div>
+				<div class="col-4 my-5" style="width: 28.333333%">
+					<input class="form-control mr-sm-2" type="search"
+						id="filter-input2" placeholder="Filter Record" aria-label="Search"
+						onkeyup="callAutoFillMethod(this);">
+				</div>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col">
 				<div class="container bootstrap snippets bootdey">
@@ -136,68 +172,61 @@
 								</ul>
 							</div>
 							<div class="col-md-6">
-								<strong>Information</strong><br>
+								<br>
 								<div class="table-responsive">
 									<table class="table table-user-information">
 										<tbody>
 											<tr>
 												<td><strong> <span
 														class="glyphicon glyphicon-asterisk text-primary"></span>
-														Identificacion
+														ID
 												</strong></td>
-												<td class="text-primary">123456789</td>
+												<td class="text-primary" id="ID"></td>
 											</tr>
 											<tr>
 												<td><strong> <span
 														class="glyphicon glyphicon-user  text-primary"></span>
-														Name
+														NAME
 												</strong></td>
-												<td class="text-primary">Bootdey</td>
+												<td class="text-primary" id="NAME"></td>
 											</tr>
 											<tr>
 												<td><strong> <span
 														class="glyphicon glyphicon-cloud text-primary"></span>
-														Lastname
+														PHONE
 												</strong></td>
-												<td class="text-primary">Bootstrap</td>
+												<td class="text-primary" id="PHONE"></td>
 											</tr>
 
 											<tr>
 												<td><strong> <span
 														class="glyphicon glyphicon-bookmark text-primary"></span>
-														Username
+														DOB
 												</strong></td>
-												<td class="text-primary">bootnipets</td>
+												<td class="text-primary" id="DOB"></td>
 											</tr>
 
 
 											<tr>
 												<td><strong> <span
 														class="glyphicon glyphicon-eye-open text-primary"></span>
-														Role
+														EMAIL
 												</strong></td>
-												<td class="text-primary">Admin</td>
-											</tr>
-											<tr>
-												<td><strong> <span
-														class="glyphicon glyphicon-envelope text-primary"></span>
-														Email
-												</strong></td>
-												<td class="text-primary">noreply@email.com</td>
+												<td class="text-primary" id="EMAIL"></td>
 											</tr>
 											<tr>
 												<td><strong> <span
 														class="glyphicon glyphicon-calendar text-primary"></span>
-														created
+														UPDATE
 												</strong></td>
-												<td class="text-primary">20 jul 20014</td>
+												<td class="text-primary" id="update"></td>
 											</tr>
 											<tr>
 												<td><strong> <span
 														class="glyphicon glyphicon-calendar text-primary"></span>
-														Modified
+														DELETE
 												</strong></td>
-												<td class="text-primary">20 jul 20014 20:00:00</td>
+												<td class="text-primary" id="delete"></td>
 											</tr>
 										</tbody>
 									</table>

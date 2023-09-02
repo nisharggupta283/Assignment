@@ -11,9 +11,10 @@ public class ConnectionPool {
 	public static Connection getConnection() throws Exception {
 		Connection connection = null;
 		ResourceBundle res = ResourceBundle.getBundle("Application");
-		System.out.println(res.getString("Driver"));
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/register", "root", "root");
+		System.out.println("is Resource Bundle file Loaded----------->"+res.getString("isLoaded"));
+		Class.forName(res.getString("Driver"));
+		connection = DriverManager.getConnection(res.getString("Source"), res.getString("Username"), res.getString("Password"));
+//		connection.setReadOnly(false);
 		return connection;
 	}
 

@@ -11,10 +11,10 @@
 		<servlet-class>com.group.servlet.LoginS</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>Register</servlet-name>
-		<display-name>Register</display-name>
+		<servlet-name>RegisterS</servlet-name>
+		<display-name>RegisterS</display-name>
 		<description></description>
-		<servlet-class>com.group.servlet.Register</servlet-class>
+		<servlet-class>com.group.servlet.RegisterS</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>FetchDataS</servlet-name>
@@ -22,22 +22,32 @@
 		<description></description>
 		<servlet-class>com.group.servlet.FetchDataS</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>AjexServletS</servlet-name>
+		<display-name>AjexServletS</display-name>
+		<description></description>
+		<servlet-class>com.group.Ajex.AjexServletS</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>LoginS</servlet-name>
 		<url-pattern>/LoginS</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>Register</servlet-name>
-		<url-pattern>/Register</url-pattern>
+		<servlet-name>RegisterS</servlet-name>
+		<url-pattern>/RegisterS</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>FetchDataS</servlet-name>
 		<url-pattern>/FetchDataS</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>AjexServletS</servlet-name>
+		<url-pattern>/AjexServletS</url-pattern>
+	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>login.jsp</welcome-file>
 	</welcome-file-list>
-	<session-config>
+<!-- 	<session-config>
 		<session-timeout>1</session-timeout>
-	</session-config>
+	</session-config> -->
 </web-app>

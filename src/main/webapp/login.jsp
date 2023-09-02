@@ -34,7 +34,7 @@
 						style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"
 						class="font-weight-bold">Registration Page for Employee</h1>
 					<h4>Sign in into your Account</h4>
-					<form action="/login" method="Post">
+					<form action="LoginS" method="Post">
 						<div class="form-row">
 							<div class="col-lg-7">
 								<input style="padding: 0.5rem;" type="email" placeholder="Email-Address"

@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
+import com.beans.UserDetails;
 import com.beans.UserValidation;
 import com.infoes.LoginInfo;
 
@@ -26,11 +26,12 @@ public class LoginS extends HttpServlet {
 	}
 	public void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String uri="";
-		LoginInfo valid = UserValidation.isValid(request.getParameter("email"), request.getParameter("pass"));
+		LoginInfo valid = UserValidation.isValid(request.getParameter("email"), request.getParameter("password"));
 		if(valid!=null) {
 			HttpSession session = request.getSession(true);
-			session.setMaxInactiveInterval(60);
+			session.setMaxInactiveInterval(3*60);
 			session.setAttribute("logininfo", valid);
+			request.setAttribute("UserList", UserDetails.getDetailsInit());
 			uri="see-list.jsp";
 		}else {
 			HttpSession session = request.getSession();
