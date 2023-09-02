@@ -61,7 +61,7 @@ System.out.println(list);
 						<div class="col-4 my-5" style="width: 28.333333%">
 							<input class="form-control mr-sm-2" type="search"
 								id="filter-input" placeholder="Filter Record"
-								aria-label="Search" onkeyup="callAutoFillMethod(this);" />
+								aria-label="Search" onkeyup="callAutoFillMethod(this,'select-filter');" />
 						</div>
 					</div>
 				</div>
@@ -95,7 +95,7 @@ System.out.println(list);
 										<td><%=loginInfo.getPhone()%></td>
 										<td><%=loginInfo.getDob()%></td>
 										<td><%=loginInfo.getEmail()%></td>
-										<td><button type="button" class="btn btn-success">Update</button></td>
+										<td><button type="button" class="btn btn-success" onclick="goToPage(<%=loginInfo.getUserID()%>)">Update</button></td>
 										<td><button type="button" class="btn btn-danger"
 												onclick="callDelete(this);"
 												value="<%=loginInfo.getUserID()%>"
@@ -149,7 +149,7 @@ System.out.println(list);
 				<div class="col-4 my-5" style="width: 28.333333%">
 					<input class="form-control mr-sm-2" type="search"
 						id="filter-input2" placeholder="Filter Record" aria-label="Search"
-						onkeyup="callAutoFillMethod(this);">
+						onkeyup="callAutoFillMethod(this,'single-filter');">
 				</div>
 			</div>
 		</div>

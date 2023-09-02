@@ -44,7 +44,40 @@ public class UserValidation {
 		}
 		return logininfo;
 	}
-
+	public static LoginInfo isValid(String id) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		LoginInfo logininfo = null;
+		try {
+			con = ConnectionPool.getReadOnlyConnection();
+			ps = con.prepareStatement("SELECT USER_ID,NAME,GENDER,PHONE,DOB,EMAIL,PASS FROM USER_MASTER WHERE USER_ID=?");
+			ps.setString(1, id);
+			rs = ps.executeQuery();
+			int count = 0;
+			while (rs.next()) {
+				count++;
+				logininfo = new LoginInfo();
+				logininfo.setUserID(rs.getInt(1));
+				logininfo.setName(rs.getString(2));
+				logininfo.setGender(rs.getString(3));
+				logininfo.setPhone(rs.getLong(4));
+				logininfo.setDob(rs.getString(5));
+				logininfo.setEmail(rs.getString(6));
+				logininfo.setPassword(rs.getString(7));
+			}
+			System.out.println("Login count-------------------->" + count);
+			if (!(count == 1)) {
+				return null;
+			}
+			DBUtility.shoutClose(con, ps, rs);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtility.shoutClose(con, ps, rs);
+		}
+		return logininfo;
+	}
 	public static boolean createUser(String name, String gender, String phone, String email, String pass, String dob) {
 
 		Connection con = null;

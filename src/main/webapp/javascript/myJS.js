@@ -66,19 +66,18 @@ function callAjexMethod() {
 }
 
 function goToPage(id) {
-	location.href = '/csv/csvdata?id=' + id + '&random=' + Math.random();
+	location.href = '/Mypcot/UpdateS?mode=col&id=' + id + '&random=' + Math.random();
 }
 
-var callAutoFillMethod = function(e, val = '') {
+var callAutoFillMethod = function(e, val) {
 
+	console.log(val);
 	let filter = e.value;
-	if (val)
-		filter = val;
 
 	if (filter && filter.length >= 2) {
 		$.ajax({
 			type: "GET",
-			url: "/Mypcot/AjexServletS?mode=likeDetails&select=" + $('#single-filter').val() + "&input=" + filter,
+			url: "/Mypcot/AjexServletS?mode=likeDetails&select=" + $(`#${val}`).val() + "&input=" + filter,
 			dataType: "JSON",
 			cache: false,
 			async: false,
@@ -89,16 +88,23 @@ var callAutoFillMethod = function(e, val = '') {
 			success: function(data) {
 				console.log(data);
 				data = JSON.parse(JSON.stringify(data));
-				recordAutoFill(data);
+				recordAutoFill(data, val);
 			},
 		});
 	}
 }
-function recordAutoFill(data) {
-	$("#filter-input2").autocomplete({
-		source: data,
-		select: callAfterAutoSelection,
-	});
+function recordAutoFill(data, val) {
+	if (val == 'single-filter') {
+		$("#filter-input2").autocomplete({
+			source: data,
+			select: callAfterAutoSelection,
+		});
+	} else {
+		$("#filter-input").autocomplete({
+			source: data,
+			select: callAfterAutoSelection,
+		});
+	}
 }
 function callAfterAutoSelection(event, ui) {
 	console.log(event.target);

@@ -53,13 +53,6 @@ public class FetchDataS extends HttpServlet {
 					writer.write(deleteOne);
 					break;
 				}
-				case "update": {
-					writer = response.getWriter();
-					String update = UserDetails.update(request.getParameter("field"), request.getParameter("value"),
-							request.getParameter("id"));
-					writer.write(update);
-					break;
-				}
 				case "getDetail": {
 					writer = response.getWriter();
 					String detail = UserDetails.getDetail(request.getParameter("id"));
@@ -74,7 +67,8 @@ public class FetchDataS extends HttpServlet {
 				}
 				case "likeDetails": {
 					writer = response.getWriter();
-					String details = UserDetails.getLikeRecords(request.getParameter("select"),request.getParameter("input"));
+					String details = UserDetails.getLikeRecords(request.getParameter("select"),
+							request.getParameter("input"));
 					writer.write(details);
 					break;
 				}

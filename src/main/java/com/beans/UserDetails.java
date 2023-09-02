@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.connection.ConnectionPool;
@@ -45,6 +47,7 @@ public class UserDetails {
 		return main.toString();
 
 	}
+
 	public static List<LoginInfo> getDetailsInit() {
 
 		Connection con = null;
@@ -76,7 +79,8 @@ public class UserDetails {
 		return main;
 
 	}
-	public static String getLikeRecords(String field,String value) {
+
+	public static String getLikeRecords(String field, String value) {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -84,12 +88,13 @@ public class UserDetails {
 		JSONArray hold = new JSONArray();
 		try {
 			con = ConnectionPool.getReadOnlyConnection();
-			ps = con.prepareStatement("SELECT "+field+",USER_ID FROM USER_MASTER where UPPER("+field+") like ?");
-			ps.setString(1, "%"+value.toLowerCase()+"%");
+			ps = con.prepareStatement(
+					"SELECT " + field + ",USER_ID FROM USER_MASTER where UPPER(" + field + ") like ?");
+			ps.setString(1, "%" + value.toLowerCase() + "%");
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				
-				hold.put(rs.getString(1)+" {"+rs.getInt(2)+"}");
+
+				hold.put(rs.getString(1) + " {" + rs.getInt(2) + "}");
 			}
 			DBUtility.shoutClose(con, ps, rs);
 		} catch (Exception e) {
@@ -100,6 +105,7 @@ public class UserDetails {
 		return hold.toString();
 
 	}
+
 	public static String getDetail(String id) {
 
 		Connection con = null;
@@ -192,32 +198,49 @@ public class UserDetails {
 
 	}
 
-	public static String update(String field, String value, String id) {
+	public static boolean update(HttpServletRequest request) {
 
 		Connection con = null;
 		PreparedStatement ps = null;
 		int isExecuted = 0;
-		JSONObject main = new JSONObject();
 		try {
-			if (field == null || value == null || id == null) {
+			if (request == null) {
 				System.out.println("Invalid aruguments--------------------> 146 USerDetails.java");
 			} else {
-				String query = "UPDATE USER_MASTER set " + field + "=" + value + " where USER_ID =" + id;
 
-				if (field.equalsIgnoreCase("PHONE"))
-					query = "UPDATE USER_MASTER set " + field + "=" + Long.parseLong(value) + " where USER_ID =" + id;
-
+				String name = "";
+				String dob = "";
+				String gender = "";
+				String email = "";
+				String phone = "";
+				String pass = "";
+				if (request.getParameter("name") != null && !"".equalsIgnoreCase(request.getParameter("name"))) {
+					name = "name=" + request.getParameter("name");
+				} else {
+					name = "name=name";
+				}
+				if (request.getParameter("dob") != null && !"".equalsIgnoreCase(request.getParameter("dob"))) {
+					dob = "dob=dob";
+				}
+				if (request.getParameter("gender") != null && !"".equalsIgnoreCase(request.getParameter("gender"))) {
+					gender = "gender=gender";
+				}
+				if (request.getParameter("email") != null && !"".equalsIgnoreCase(request.getParameter("email"))) {
+					email = "email=email";
+				}
+				if (request.getParameter("phone") != null && !"".equalsIgnoreCase(request.getParameter("phone"))) {
+					phone = "phone=phone";
+				}
+				if (request.getParameter("pass") != null && !"".equalsIgnoreCase(request.getParameter("pass"))) {
+					pass = "pass=pass";
+				}
+				name = "UPDATE USER_MASTER set " + name + "," + dob + "," + gender + "," + email + "," + phone + ","
+						+ pass;
 				con = ConnectionPool.getReadOnlyConnection();
-				ps = con.prepareStatement(query);
+				ps = con.prepareStatement(name);
 				isExecuted = ps.executeUpdate();
 
-				System.out.println(query);
-
-				if (isExecuted == 1) {
-					main.put("STATUS", true);
-					main.put("FREQUENCY", isExecuted);
-				} else
-					main.put("STATUS", false);
+				System.out.println(name);
 				DBUtility.shoutClose(con, ps, null);
 			}
 		} catch (Exception e) {
@@ -225,6 +248,6 @@ public class UserDetails {
 		} finally {
 			DBUtility.shoutClose(con, ps, null);
 		}
-		return main.toString();
+		return isExecuted == 1;
 	}
 }

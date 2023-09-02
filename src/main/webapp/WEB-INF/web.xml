@@ -28,6 +28,12 @@
 		<description></description>
 		<servlet-class>com.group.Ajex.AjexServletS</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>UpdateS</servlet-name>
+		<display-name>UpdateS</display-name>
+		<description></description>
+		<servlet-class>com.group.servlet.UpdateS</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>LoginS</servlet-name>
 		<url-pattern>/LoginS</url-pattern>
@@ -43,6 +49,10 @@
 	<servlet-mapping>
 		<servlet-name>AjexServletS</servlet-name>
 		<url-pattern>/AjexServletS</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UpdateS</servlet-name>
+		<url-pattern>/UpdateS</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>login.jsp</welcome-file>

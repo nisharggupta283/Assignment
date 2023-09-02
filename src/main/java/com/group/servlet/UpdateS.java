@@ -13,11 +13,11 @@ import com.beans.UserDetails;
 import com.beans.UserValidation;
 import com.infoes.LoginInfo;
 
-public class LoginS extends HttpServlet {
+public class UpdateS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public LoginS() {
-		System.out.println("Int loginS----------------------------->");
+	public UpdateS() {
+		super();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,19 +32,28 @@ public class LoginS extends HttpServlet {
 
 	public void performTask(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		String uri = "";
-		LoginInfo valid = UserValidation.isValid(request.getParameter("email"), request.getParameter("password"));
-		if (valid != null) {
-			HttpSession session = request.getSession(true);
-			session.setMaxInactiveInterval(3 * 60);
-			session.setAttribute("logininfo", valid);
-			request.setAttribute("UserList", UserDetails.getDetailsInit());
-			uri = "see-list.jsp";
+		if (request.getParameter("mode") != null && "col".equalsIgnoreCase(request.getParameter("mode"))) {
+			LoginInfo valid = UserValidation.isValid(request.getParameter("id"));
+			request.setAttribute("username", valid.getName());
+			request.setAttribute("id", valid.getUserID());
+			uri = "updateDetails.jsp";
 		} else {
-			HttpSession session = request.getSession();
-			session.invalidate();
-			uri = "login.jsp";
+			LoginInfo valid = UserValidation.isValid(request.getParameter("id"));
+			if (valid != null) {
+				boolean update = UserDetails.update(request);
+				if (update)
+					uri = "see-list.jsp";
+				else
+					uri = "updateDetails.jsp";
+			} else {
+				HttpSession session = request.getSession();
+				session.invalidate();
+				uri = "login.jsp";
+			}
 		}
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher(uri);
 		dispatcher.forward(request, response);
 	}
