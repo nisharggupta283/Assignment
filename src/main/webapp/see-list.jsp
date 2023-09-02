@@ -27,7 +27,15 @@ System.out.println(list);
 </head>
 
 <body>
-
+	<div class="toast align-items-center" role="alert"
+		aria-live="assertive" aria-atomic="true">
+		<div class="d-flex">
+			<div class="toast-body">Hello, world! This is a toast message.
+			</div>
+			<button type="button" class="btn-close me-2 m-auto"
+				data-bs-dismiss="toast" aria-label="Close"></button>
+		</div>
+	</div>
 	<div class="container">
 		<div class="row">
 			<div class="col my-5">
@@ -61,7 +69,8 @@ System.out.println(list);
 						<div class="col-4 my-5" style="width: 28.333333%">
 							<input class="form-control mr-sm-2" type="search"
 								id="filter-input" placeholder="Filter Record"
-								aria-label="Search" onkeyup="callAutoFillMethod(this,'select-filter');" />
+								aria-label="Search"
+								onkeyup="callAutoFillMethod(this,'select-filter');" />
 						</div>
 					</div>
 				</div>
@@ -95,7 +104,8 @@ System.out.println(list);
 										<td><%=loginInfo.getPhone()%></td>
 										<td><%=loginInfo.getDob()%></td>
 										<td><%=loginInfo.getEmail()%></td>
-										<td><button type="button" class="btn btn-success" onclick="goToPage(<%=loginInfo.getUserID()%>)">Update</button></td>
+										<td><button type="button" class="btn btn-success"
+												onclick="goToPage(<%=loginInfo.getUserID()%>)">Update</button></td>
 										<td><button type="button" class="btn btn-danger"
 												onclick="callDelete(this);"
 												value="<%=loginInfo.getUserID()%>"
@@ -110,7 +120,7 @@ System.out.println(list);
 						</div>
 					</div>
 				</div>
-<!-- 				<div class="container text-center">
+				<!-- 				<div class="container text-center">
 					<div class="row">
 						<div class="col-md-4"></div>
 						<div class="col-md-4 offset-md-4">
@@ -215,15 +225,15 @@ System.out.println(list);
 												<td class="text-primary" id="EMAIL"></td>
 											</tr>
 											<tr>
-												<td><strong> <span
-														class="glyphicon glyphicon-calendar text-primary"></span>
+												<td onclick="goToPage()" id="update"><strong>
+														<span class="glyphicon glyphicon-calendar text-primary"></span>
 														UPDATE
 												</strong></td>
 												<td class="text-primary" id="update"></td>
 											</tr>
 											<tr>
-												<td><strong> <span
-														class="glyphicon glyphicon-calendar text-primary"></span>
+												<td onclick="callDelete(this);" id="delete"><strong>
+														<span class="glyphicon glyphicon-calendar text-primary"></span>
 														DELETE
 												</strong></td>
 												<td class="text-primary" id="delete"></td>
