@@ -215,28 +215,38 @@ public class UserDetails {
 				String phone = "";
 				String pass = "";
 				if (request.getParameter("name") != null && !"".equalsIgnoreCase(request.getParameter("name"))) {
-					name = "name=" + request.getParameter("name");
+					name = "name='" + request.getParameter("name")+"'";
 				} else {
 					name = "name=name";
 				}
 				if (request.getParameter("dob") != null && !"".equalsIgnoreCase(request.getParameter("dob"))) {
+					dob = "dob='"+request.getParameter("dob")+"'";
+				}else {
 					dob = "dob=dob";
 				}
 				if (request.getParameter("gender") != null && !"".equalsIgnoreCase(request.getParameter("gender"))) {
+					gender = "gender='"+request.getParameter("gender")+"'";
+				}else {
 					gender = "gender=gender";
 				}
 				if (request.getParameter("email") != null && !"".equalsIgnoreCase(request.getParameter("email"))) {
+					email = "email='"+request.getParameter("email")+"'";
+				}else {
 					email = "email=email";
 				}
 				if (request.getParameter("phone") != null && !"".equalsIgnoreCase(request.getParameter("phone"))) {
+					phone = "phone="+request.getParameter("phone");
+				}else {
 					phone = "phone=phone";
 				}
 				if (request.getParameter("pass") != null && !"".equalsIgnoreCase(request.getParameter("pass"))) {
+					pass = "pass='"+request.getParameter("pass")+"'";
+				}else {
 					pass = "pass=pass";
 				}
 				name = "UPDATE USER_MASTER set " + name + "," + dob + "," + gender + "," + email + "," + phone + ","
-						+ pass;
-				con = ConnectionPool.getReadOnlyConnection();
+						+ pass+" WHERE USER_ID="+request.getParameter("id");
+				con = ConnectionPool.getConnection();
 				ps = con.prepareStatement(name);
 				isExecuted = ps.executeUpdate();
 
